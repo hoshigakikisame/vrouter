@@ -72,59 +72,60 @@ class VRouter extends VRouterApp {
   @override
   final GlobalKey<NavigatorState>? navigatorKey;
 
-  VRouter({
-    Key? key,
-    required this.routes,
-    Future<void> Function(VRedirector vRedirector) beforeEnter =
-        VoidVGuard.voidBeforeEnter,
-    Future<void> Function(
-      VRedirector vRedirector,
-      void Function(Map<String, String> historyState) saveHistoryState,
-    )
-        beforeLeave = VoidVGuard.voidBeforeLeave,
-    void Function(BuildContext context, String? from, String to) afterEnter =
-        VoidVGuard.voidAfterEnter,
-    Future<void> Function(VRedirector vRedirector) onPop =
-        VoidVPopHandler.voidOnPop,
-    Future<void> Function(VRedirector vRedirector) onSystemPop =
-        VoidVPopHandler.voidOnSystemPop,
-    this.buildTransition,
-    this.transitionDuration,
-    this.reverseTransitionDuration,
-    this.mode = VRouterMode.hash,
-    this.initialUrl = '/',
-    this.logs = VLogs.info,
-    this.navigatorObservers = const [],
-    this.builder,
-    @Deprecated('Please use navigatorKey instead.\n This has been removed because it is redundant with navigatorKey.')
-        this.appRouterKey,
-    this.navigatorKey,
-    // Bellow are the MaterialApp parameters
-    this.title = '',
-    this.onGenerateTitle,
-    this.color,
-    this.theme,
-    this.darkTheme,
-    this.highContrastTheme,
-    this.highContrastDarkTheme,
-    this.themeMode = ThemeMode.system,
-    this.locale,
-    this.localizationsDelegates,
-    this.localeListResolutionCallback,
-    this.localeResolutionCallback,
-    this.supportedLocales = const <Locale>[Locale('en', 'US')],
-    this.debugShowMaterialGrid = false,
-    this.showPerformanceOverlay = false,
-    this.checkerboardRasterCacheImages = false,
-    this.checkerboardOffscreenLayers = false,
-    this.showSemanticsDebugger = false,
-    this.debugShowCheckedModeBanner = true,
-    this.useInheritedMediaQuery = false,
-    this.shortcuts,
-    this.actions,
-    this.restorationScopeId,
-    this.scrollBehavior,
-  })  : _beforeEnter = beforeEnter,
+  VRouter(
+      {Key? key,
+      required this.routes,
+      Future<void> Function(VRedirector vRedirector) beforeEnter =
+          VoidVGuard.voidBeforeEnter,
+      Future<void> Function(
+        VRedirector vRedirector,
+        void Function(Map<String, String> historyState) saveHistoryState,
+      )
+          beforeLeave = VoidVGuard.voidBeforeLeave,
+      void Function(BuildContext context, String? from, String to) afterEnter =
+          VoidVGuard.voidAfterEnter,
+      Future<void> Function(VRedirector vRedirector) onPop =
+          VoidVPopHandler.voidOnPop,
+      Future<void> Function(VRedirector vRedirector) onSystemPop =
+          VoidVPopHandler.voidOnSystemPop,
+      this.buildTransition,
+      this.transitionDuration,
+      this.reverseTransitionDuration,
+      this.mode = VRouterMode.hash,
+      this.initialUrl = '/',
+      this.logs = VLogs.info,
+      this.navigatorObservers = const [],
+      this.builder,
+      @Deprecated('Please use navigatorKey instead.\n This has been removed because it is redundant with navigatorKey.')
+          this.appRouterKey,
+      this.navigatorKey,
+      // Bellow are the MaterialApp parameters
+      this.title = '',
+      this.onGenerateTitle,
+      this.color,
+      this.theme,
+      this.darkTheme,
+      this.highContrastTheme,
+      this.highContrastDarkTheme,
+      this.themeMode = ThemeMode.system,
+      this.locale,
+      this.localizationsDelegates,
+      this.localeListResolutionCallback,
+      this.localeResolutionCallback,
+      this.supportedLocales = const <Locale>[Locale('en', 'US')],
+      this.debugShowMaterialGrid = false,
+      this.showPerformanceOverlay = false,
+      this.checkerboardRasterCacheImages = false,
+      this.checkerboardOffscreenLayers = false,
+      this.showSemanticsDebugger = false,
+      this.debugShowCheckedModeBanner = true,
+      this.useInheritedMediaQuery = false,
+      this.shortcuts,
+      this.actions,
+      this.restorationScopeId,
+      this.scrollBehavior,
+      this.scaffoldMessengerKey})
+      : _beforeEnter = beforeEnter,
         _beforeLeave = beforeLeave,
         _afterEnter = afterEnter,
         _onPop = onPop,
@@ -483,6 +484,14 @@ class VRouter extends VRouterApp {
   ///  * <https://material.io/design/layout/spacing-methods.html>
   final bool debugShowMaterialGrid;
 
+  /// A key to use when building the [ScaffoldMessenger].
+  ///
+  /// If a [scaffoldMessengerKey] is specified, the [ScaffoldMessenger] can be
+  /// directly manipulated without first obtaining it from a [BuildContext] via
+  /// [ScaffoldMessenger.of]: from the [scaffoldMessengerKey], use the
+  /// [GlobalKey.currentState] getter.
+  final GlobalKey<ScaffoldMessengerState>? scaffoldMessengerKey;
+
   static InitializedVRouterSailor of(BuildContext context) {
     InitializedVRouterSailor? vRouterData;
 
@@ -529,6 +538,7 @@ class VRouterState extends State<VRouter>
     return VRouterScope(
       vRouterMode: widget.mode,
       child: MaterialApp.router(
+        scaffoldMessengerKey: widget.scaffoldMessengerKey,
         backButtonDispatcher: VBackButtonDispatcher(),
         routeInformationParser: VRouteInformationParser(),
         routerDelegate: vRouterDelegate,
